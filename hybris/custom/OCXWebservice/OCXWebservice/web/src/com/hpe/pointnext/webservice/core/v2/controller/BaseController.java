@@ -12,14 +12,14 @@ package com.hpe.pointnext.webservice.core.v2.controller;
 
 import de.hybris.platform.commerceservices.search.pagedata.PaginationData;
 import de.hybris.platform.commercewebservicescommons.dto.search.pagedata.PaginationWsDTO;
-import de.hybris.platform.servicelayer.exceptions.ModelNotFoundException;
-import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
-import de.hybris.platform.webservicescommons.dto.error.ErrorListWsDTO;
-import de.hybris.platform.webservicescommons.dto.error.ErrorWsDTO;
+import de.hybris.platform.webservicescommons.errors.exceptions.NotFoundException;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
 import de.hybris.platform.webservicescommons.util.YSanitizer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.google.common.collect.Lists;
+import com.hpe.pointnext.webservice.core.dto.error.ErrorDTO;
 
 
 /**
@@ -50,6 +50,14 @@ public class BaseController
 	protected static final String DEFAULT_FIELD_SET = FieldSetLevelHelper.DEFAULT_LEVEL;
 	protected static final String HEADER_TOTAL_COUNT = "X-Total-Count";
 	private static final Logger LOG = Logger.getLogger(BaseController.class);
+
+	static final Map<Object, String> OcxExceptionCodes = new HashMap<Object, String>()
+	{
+		{
+			put(Exception.class, "OCX001");
+		}
+	};
+
 	@Resource(name = "dataMapper")
 	private DataMapper dataMapper;
 
@@ -76,26 +84,40 @@ public class BaseController
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	@ExceptionHandler(
-	{ ModelNotFoundException.class })
-	public ErrorListWsDTO handleModelNotFoundException(final Exception ex)
+	{ Exception.class })
+	public ErrorDTO handleException(final Exception ex)
 	{
 		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
 		if (LOG.isDebugEnabled())
 		{
 			LOG.debug(ex);
 		}
-		
-		return handleErrorInternal(UnknownIdentifierException.class.getSimpleName(), ex.getMessage());
+
+		return handleErrorInternal(ex, ex.getMessage());
 	}
 
-	protected ErrorListWsDTO handleErrorInternal(final String type, final String message)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ResponseBody
+	@ExceptionHandler(
+	{ NotFoundException.class })
+	public ErrorDTO handleUrlNotFoundException(final NotFoundException ex)
 	{
-		final ErrorListWsDTO errorListDto = new ErrorListWsDTO();
-		final ErrorWsDTO error = new ErrorWsDTO();
-		error.setType(type.replace("Exception", "Error"));
+		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug(ex);
+		}
+
+		return handleErrorInternal(ex, ex.getMessage());
+	}
+
+	protected ErrorDTO handleErrorInternal(final Exception ex, final String message)
+	{
+		final ErrorDTO error = new ErrorDTO();
+		error.setType(ex.getClass().getSimpleName().replace("Exception", "Error"));
 		error.setMessage(sanitize(message));
-		errorListDto.setErrors(Lists.newArrayList(error));
-		return errorListDto;
+		error.setCode(OcxExceptionCodes.get(ex.getClass()));
+		return error;
 	}
 
 	protected void validate(final Object object, final String objectName, final Validator validator)

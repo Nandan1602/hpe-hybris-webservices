@@ -151,5 +151,11 @@
 		<property name="orderStatusUpdateElements"
 		          type="java.util.List&lt;com.hpe.pointnext.webservice.core.queues.data.OrderStatusUpdateElementData>"/>
 	</bean>
+	
+	<bean class="com.hpe.pointnext.webservice.core.dto.error.ErrorDTO">
+		<property name="code" type="String"/>
+		<property name="message" type="String"/>
+		<property name="type" type="String"/>
+	</bean>
 
 </beans>
