@@ -75,8 +75,10 @@
 
 												
 		<!-- <extension name="yhacext" />-->
-<extension dir="/Users/nandankumar4/Documents/Tech_Learnings/Hybris_training/hybris6.7/hybris/bin/custom/OCXWebservice/OCXWebservice"/>
-<extension dir="/Users/nandankumar4/Documents/Tech_Learnings/Hybris_training/hybris6.7/hybris/bin/custom/OCXWebservice/OCXWebservicetest"/>
+
+<extension dir="${HYBRIS_BIN_DIR}/custom/OCXWebservice/OCXWebservice"/>
+
+<extension dir="${HYBRIS_BIN_DIR}/custom/OCXWebservice/OCXWebservicetest"/>
 
 <extension name="oauth2" />
 
