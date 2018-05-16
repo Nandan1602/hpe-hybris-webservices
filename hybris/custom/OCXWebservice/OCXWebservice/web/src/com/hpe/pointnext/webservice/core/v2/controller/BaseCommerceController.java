@@ -27,7 +27,7 @@ import de.hybris.platform.converters.Populator;
 import de.hybris.platform.order.InvalidCartException;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.validators.EnumValueValidator;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.exceptions.InvalidPaymentInfoException;
 import com.hpe.pointnext.webservice.core.exceptions.NoCheckoutCartException;
 import com.hpe.pointnext.webservice.core.exceptions.UnsupportedDeliveryModeException;
@@ -267,7 +267,7 @@ public class BaseCommerceController extends BaseController
 			return;
 		}
 
-		final String[] statusesStrings = statuses.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] statusesStrings = statuses.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 		validate(statusesStrings, "", orderStatusValueValidator);
 	}
 

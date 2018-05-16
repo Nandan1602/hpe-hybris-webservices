@@ -14,7 +14,7 @@ import de.hybris.platform.commercefacades.product.data.PromotionData;
 import de.hybris.platform.commercefacades.promotion.CommercePromotionFacade;
 import de.hybris.platform.commercefacades.promotion.PromotionOption;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.RequestParameterException;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.product.data.PromotionDataList;
 
 import java.util.HashSet;
@@ -146,7 +146,7 @@ public class PromotionsController extends BaseController
 
 	protected Set<PromotionOption> extractOptions(final String options)
 	{
-		final String[] optionsStrings = options.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] optionsStrings = options.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<PromotionOption> opts = new HashSet<PromotionOption>();
 		for (final String option : optionsStrings)

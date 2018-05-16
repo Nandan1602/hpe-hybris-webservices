@@ -18,7 +18,7 @@ import de.hybris.platform.commerceservices.search.pagedata.PageableData;
 import de.hybris.platform.commerceservices.search.pagedata.PaginationData;
 import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import de.hybris.platform.core.enums.OrderStatus;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.formatters.WsDateFormatter;
 import com.hpe.pointnext.webservice.core.queues.data.OrderStatusUpdateElementData;
 import com.hpe.pointnext.webservice.core.queues.data.OrderStatusUpdateElementDataList;
@@ -175,7 +175,7 @@ public class OrderController extends BaseController
 
 	protected Set<OrderStatus> extractOrderStatuses(final String statuses)
 	{
-		final String[] statusesStrings = statuses.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] statusesStrings = statuses.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<OrderStatus> statusesEnum = new HashSet<>();
 		for (final String status : statusesStrings)

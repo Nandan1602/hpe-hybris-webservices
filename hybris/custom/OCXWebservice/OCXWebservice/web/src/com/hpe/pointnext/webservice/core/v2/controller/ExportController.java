@@ -16,7 +16,7 @@ import de.hybris.platform.commercefacades.product.data.ProductResultData;
 import de.hybris.platform.commercewebservicescommons.dto.product.ProductListWsDTO;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.RequestParameterException;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.formatters.WsDateFormatter;
 import com.hpe.pointnext.webservice.core.product.data.ProductDataList;
 
@@ -65,13 +65,13 @@ public class ExportController extends BaseController
 		{
 			productOptions = productOptions + option.toString() + " ";
 		}
-		productOptions = productOptions.trim().replace(" ", YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		productOptions = productOptions.trim().replace(" ", OCXWebserviceConstants.OPTIONS_SEPARATOR);
 		OPTIONS = extractOptions(productOptions);
 	}
 
 	protected static Set<ProductOption> extractOptions(final String options)
 	{
-		final String[] optionsStrings = options.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] optionsStrings = options.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<ProductOption> opts = new HashSet<ProductOption>();
 		for (final String option : optionsStrings)

@@ -17,7 +17,7 @@ import de.hybris.platform.commerceservices.search.pagedata.PageableData;
 import de.hybris.platform.commerceservices.search.pagedata.SearchPageData;
 import de.hybris.platform.commercewebservicescommons.dto.order.OrderHistoryListWsDTO;
 import de.hybris.platform.core.enums.OrderStatus;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -64,7 +64,7 @@ public class OrdersHelper extends AbstractHelper
 
 	protected Set<OrderStatus> extractOrderStatuses(final String statuses)
 	{
-		final String[] statusesStrings = statuses.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] statusesStrings = statuses.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<OrderStatus> statusesEnum = new HashSet<>();
 		for (final String status : statusesStrings)
