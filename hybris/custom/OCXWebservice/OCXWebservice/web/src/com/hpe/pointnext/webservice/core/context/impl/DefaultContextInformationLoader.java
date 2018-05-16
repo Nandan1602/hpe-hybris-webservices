@@ -27,7 +27,7 @@ import de.hybris.platform.site.BaseSiteService;
 import de.hybris.platform.store.BaseStoreModel;
 import de.hybris.platform.store.services.BaseStoreService;
 import de.hybris.platform.webservicescommons.util.YSanitizer;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.context.ContextInformationLoader;
 import com.hpe.pointnext.webservice.core.exceptions.InvalidResourceException;
 import com.hpe.pointnext.webservice.core.exceptions.RecalculationException;
@@ -69,7 +69,7 @@ public class DefaultContextInformationLoader implements ContextInformationLoader
 	@Override
 	public LanguageModel setLanguageFromRequest(final HttpServletRequest request) throws UnsupportedLanguageException
 	{
-		final String languageString = request.getParameter(YcommercewebservicesConstants.HTTP_REQUEST_PARAM_LANGUAGE);
+		final String languageString = request.getParameter(OCXWebserviceConstants.HTTP_REQUEST_PARAM_LANGUAGE);
 		LanguageModel languageToSet = null;
 
 		if (!StringUtils.isBlank(languageString))
@@ -133,7 +133,7 @@ public class DefaultContextInformationLoader implements ContextInformationLoader
 	public CurrencyModel setCurrencyFromRequest(final HttpServletRequest request) throws UnsupportedCurrencyException,
 			RecalculationException
 	{
-		final String currencyString = request.getParameter(YcommercewebservicesConstants.HTTP_REQUEST_PARAM_CURRENCY);
+		final String currencyString = request.getParameter(OCXWebserviceConstants.HTTP_REQUEST_PARAM_CURRENCY);
 		CurrencyModel currencyToSet = null;
 
 		if (!StringUtils.isBlank(currencyString))
@@ -322,8 +322,8 @@ public class DefaultContextInformationLoader implements ContextInformationLoader
 	protected String[] getSpecialUrlCharacters()
 	{
 		final String configurationString = getConfigurationService().getConfiguration().getString(
-				YcommercewebservicesConstants.URL_SPECIAL_CHARACTERS_PROPERTY,
-				YcommercewebservicesConstants.DEFAULT_URL_SPECIAL_CHARACTERS);
+				OCXWebserviceConstants.URL_SPECIAL_CHARACTERS_PROPERTY,
+				OCXWebserviceConstants.DEFAULT_URL_SPECIAL_CHARACTERS);
 		return configurationString.split(",");
 	}
 

@@ -11,7 +11,7 @@
 package com.hpe.pointnext.webservice.core.conv;
 
 import com.thoughtworks.xstream.converters.SingleValueConverter;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ public class ImageUrlConverter implements SingleValueConverter
     }
 
     protected String addRootContext(final String imageUrl){
-        return new StringBuilder(YcommercewebservicesConstants.V1_ROOT_CONTEXT)
+        return new StringBuilder(OCXWebserviceConstants.V1_ROOT_CONTEXT)
                 .append(imageUrl)
                 .toString();
     }

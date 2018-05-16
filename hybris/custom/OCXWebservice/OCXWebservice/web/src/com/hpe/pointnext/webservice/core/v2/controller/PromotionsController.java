@@ -19,7 +19,7 @@ import de.hybris.platform.commercewebservicescommons.errors.exceptions.RequestPa
 import de.hybris.platform.webservicescommons.cache.CacheControl;
 import de.hybris.platform.webservicescommons.cache.CacheControlDirective;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.product.data.PromotionDataList;
 
 import java.util.HashSet;
@@ -67,7 +67,7 @@ public class PromotionsController extends BaseController
 		{
 			promotionOptions = promotionOptions + option.toString() + " ";
 		}
-		promotionOptions = promotionOptions.trim().replace(" ", YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		promotionOptions = promotionOptions.trim().replace(" ", OCXWebserviceConstants.OPTIONS_SEPARATOR);
 		OPTIONS = extractOptions(promotionOptions);
 	}
 
@@ -168,7 +168,7 @@ public class PromotionsController extends BaseController
 
 	protected static Set<PromotionOption> extractOptions(final String options)
 	{
-		final String[] optionsStrings = options.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] optionsStrings = options.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<PromotionOption> opts = new HashSet<PromotionOption>();
 		for (final String option : optionsStrings)

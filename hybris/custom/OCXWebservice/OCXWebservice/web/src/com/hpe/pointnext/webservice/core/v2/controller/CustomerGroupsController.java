@@ -23,7 +23,7 @@ import de.hybris.platform.commercewebservicescommons.dto.user.UserGroupWsDTO;
 import de.hybris.platform.commercewebservicescommons.errors.exceptions.RequestParameterException;
 import de.hybris.platform.servicelayer.user.UserService;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,7 +70,7 @@ public class CustomerGroupsController extends BaseController
 		{
 			userGroupOptions = userGroupOptions + option.toString() + " ";
 		}
-		userGroupOptions = userGroupOptions.trim().replace(" ", YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		userGroupOptions = userGroupOptions.trim().replace(" ", OCXWebserviceConstants.OPTIONS_SEPARATOR);
 		OPTIONS = getOptions(userGroupOptions);
 	}
 

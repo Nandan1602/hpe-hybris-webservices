@@ -44,7 +44,7 @@ import de.hybris.platform.webservicescommons.cache.CacheControl;
 import de.hybris.platform.webservicescommons.cache.CacheControlDirective;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.formatters.WsDateFormatter;
 import com.hpe.pointnext.webservice.core.product.data.ReviewDataList;
 import com.hpe.pointnext.webservice.core.product.data.SuggestionDataList;
@@ -144,7 +144,7 @@ public class ProductsController extends BaseController
 		{
 			productOptions = productOptions + option.toString() + " ";
 		}
-		productOptions = productOptions.trim().replace(" ", YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		productOptions = productOptions.trim().replace(" ", OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		PRODUCT_OPTIONS = productOptions;
 		OPTIONS = extractOptions(productOptions);
@@ -152,7 +152,7 @@ public class ProductsController extends BaseController
 
 	protected static Set<ProductOption> extractOptions(final String options)
 	{
-		final String[] optionsStrings = options.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] optionsStrings = options.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<ProductOption> opts = new HashSet<ProductOption>();
 		for (final String option : optionsStrings)

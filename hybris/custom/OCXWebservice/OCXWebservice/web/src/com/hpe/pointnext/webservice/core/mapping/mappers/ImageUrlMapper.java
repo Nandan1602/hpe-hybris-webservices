@@ -13,7 +13,7 @@ package com.hpe.pointnext.webservice.core.mapping.mappers;
 import de.hybris.platform.commercefacades.product.data.ImageData;
 import de.hybris.platform.commercewebservicescommons.dto.product.ImageWsDTO;
 import de.hybris.platform.webservicescommons.mapping.mappers.AbstractCustomMapper;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import ma.glasnost.orika.MappingContext;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,7 +29,7 @@ public class ImageUrlMapper extends AbstractCustomMapper<ImageData, ImageWsDTO>
         {
             if (shouldMap(a, b, context))
             {
-                StringBuilder url = new StringBuilder(YcommercewebservicesConstants.V2_ROOT_CONTEXT)
+                StringBuilder url = new StringBuilder(OCXWebserviceConstants.V2_ROOT_CONTEXT)
                         .append(a.getUrl());
                 b.setUrl(url.toString());
             }

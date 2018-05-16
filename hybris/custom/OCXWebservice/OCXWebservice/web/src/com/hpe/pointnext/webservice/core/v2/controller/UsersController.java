@@ -49,7 +49,7 @@ import de.hybris.platform.webservicescommons.dto.error.ErrorWsDTO;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdAndUserIdParam;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.populator.HttpRequestCustomerDataPopulator;
 import com.hpe.pointnext.webservice.core.populator.options.PaymentInfoOption;
 import com.hpe.pointnext.webservice.core.user.data.AddressDataList;
@@ -169,7 +169,7 @@ public class UsersController extends BaseCommerceController
 			registerNewUser(login, password, titleCode, firstName, lastName);
 			customer = customerFacade.getUserForUID(userId);
 		}
-		httpResponse.setHeader(YcommercewebservicesConstants.LOCATION, getAbsoluteLocationURL(httpRequest, userId)); //NOSONAR
+		httpResponse.setHeader(OCXWebserviceConstants.LOCATION, getAbsoluteLocationURL(httpRequest, userId)); //NOSONAR
 		return getDataMapper().map(customer, UserWsDTO.class, fields);
 	}
 
@@ -195,7 +195,7 @@ public class UsersController extends BaseCommerceController
 				"login,password,titleCode,firstName,lastName");
 		customerFacade.register(registration);
 		final String userId = user.getUid();
-		httpResponse.setHeader(YcommercewebservicesConstants.LOCATION, getAbsoluteLocationURL(httpRequest, userId)); //NOSONAR
+		httpResponse.setHeader(OCXWebserviceConstants.LOCATION, getAbsoluteLocationURL(httpRequest, userId)); //NOSONAR
 		return getDataMapper().map(customerFacade.getUserForUID(userId), UserWsDTO.class, fields);
 	}
 
@@ -204,9 +204,9 @@ public class UsersController extends BaseCommerceController
 	{
 		final String requestURL = httpRequest.getRequestURL().toString();
 		final StringBuilder absoluteURLSb = new StringBuilder(requestURL);
-		if (!requestURL.endsWith(YcommercewebservicesConstants.SLASH))
+		if (!requestURL.endsWith(OCXWebserviceConstants.SLASH))
 		{
-			absoluteURLSb.append(YcommercewebservicesConstants.SLASH);
+			absoluteURLSb.append(OCXWebserviceConstants.SLASH);
 		}
 		absoluteURLSb.append(UriUtils.encodePathSegment(uid, StandardCharsets.UTF_8.name()));
 		return absoluteURLSb.toString();
@@ -1181,7 +1181,7 @@ public class UsersController extends BaseCommerceController
 
 	protected Set<OrderStatus> extractOrderStatuses(final String statuses)
 	{
-		final String[] statusesStrings = statuses.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] statusesStrings = statuses.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<OrderStatus> statusesEnum = new HashSet<>();
 		for (final String status : statusesStrings)

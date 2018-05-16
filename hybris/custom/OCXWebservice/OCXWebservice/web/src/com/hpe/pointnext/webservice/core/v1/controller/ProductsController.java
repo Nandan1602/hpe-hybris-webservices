@@ -37,7 +37,7 @@ import de.hybris.platform.commercewebservicescommons.errors.exceptions.StockSyst
 import de.hybris.platform.converters.Populator;
 import de.hybris.platform.servicelayer.dto.converter.Converter;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
-import com.hpe.pointnext.webservice.core.constants.YcommercewebservicesConstants;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
 import com.hpe.pointnext.webservice.core.formatters.WsDateFormatter;
 import com.hpe.pointnext.webservice.core.product.data.ProductDataList;
 import com.hpe.pointnext.webservice.core.product.data.SuggestionDataList;
@@ -392,7 +392,7 @@ public class ProductsController extends BaseController
 
 	protected Set<ProductOption> extractOptions(final String options)
 	{
-		final String[] optionsStrings = options.split(YcommercewebservicesConstants.OPTIONS_SEPARATOR);
+		final String[] optionsStrings = options.split(OCXWebserviceConstants.OPTIONS_SEPARATOR);
 
 		final Set<ProductOption> opts = new HashSet<ProductOption>();
 		for (final String option : optionsStrings)
