@@ -8,5 +8,30 @@
 # Information and shall use it only in accordance with the terms of the
 # license agreement you entered into with SAP.
 # -----------------------------------------------------------------------
-INSERT_UPDATE UserGroup;uid[unique=true];locname[lang=de];locname[lang=en];groups(uid)
-;customermanagergroup;Kunden Manager-Gruppe;Customer Manager Group;employeegroup
+$START_USERRIGHTS;;;;;;;;;
+
+Type;UID;MemberOfGroups;Password;Target;read;change;create;remove;change_perm
+# WebServices group and members of that group;;;;;;;;;
+UserGroup;webservicegroup;;;;;;;;
+UserGroup;employeegroup;webservicegroup;;;;;;;
+UserGroup;customergroup;webservicegroup;;;;;;;
+UserGroup;admingroup;webservicegroup;;;;;;;
+
+$END_USERRIGHTS;;;;;
+
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;webservicegroup;
+;admingroup;webservicegroup
+;employeegroup;webservicegroup
+;customergroup;webservicegroup
+
+INSERT_UPDATE UserGroup;uid[unique=true];locname[lang=en];groups(uid)[mode=append]
+;system;"Custom System Group";webservicegroup,admingroup
+
+INSERT_UPDATE User;uid[unique=true];groups(uid);password[passwordEncoding=‘pbkdf2’]
+;hpe;system;hpe
+
+#OAuth clients
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true];resourceIds;scope;authorizedGrantTypes;authorities;clientSecret;registeredRedirectUri
+;hpe_client;hybris;extended;authorization_code,refresh_token,password,client_credentials;ROLE_TRUSTED_CLIENT;hpeocx;
+
