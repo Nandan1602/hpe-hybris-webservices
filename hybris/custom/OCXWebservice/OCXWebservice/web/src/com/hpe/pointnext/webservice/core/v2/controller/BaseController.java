@@ -12,7 +12,7 @@ package com.hpe.pointnext.webservice.core.v2.controller;
 
 import de.hybris.platform.commerceservices.search.pagedata.PaginationData;
 import de.hybris.platform.commercewebservicescommons.dto.search.pagedata.PaginationWsDTO;
-import de.hybris.platform.webservicescommons.errors.exceptions.NotFoundException;
+import de.hybris.platform.servicelayer.exceptions.UnknownIdentifierException;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.mapping.DataMapper;
 import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
@@ -23,8 +23,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.ForbiddenException;
+import javax.ws.rs.NotAcceptableException;
+import javax.ws.rs.NotFoundException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.MethodNotSupportedException;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -36,6 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.hpe.pointnext.webservice.core.dto.error.ErrorDTO;
+import com.sun.xml.internal.ws.server.UnsupportedMediaException;
 
 
 /**
@@ -55,6 +61,12 @@ public class BaseController
 	{
 		{
 			put(Exception.class, "OCX001");
+			put(NotAcceptableException.class, "OCX002");
+			put(NotFoundException.class, "OCX003");
+			put(ForbiddenException.class, "OCX004");
+			put(MethodNotSupportedException.class, "OCX005");
+			put(BadRequestException.class, "OCX006");
+			put(UnknownIdentifierException.class, "OCX007");
 		}
 	};
 
@@ -84,8 +96,23 @@ public class BaseController
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	@ExceptionHandler(
-	{ Exception.class })
-	public ErrorDTO handleException(final Exception ex)
+	{ BadRequestException.class })
+	public ErrorDTO handleException(final BadRequestException ex)
+	{
+		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug(ex);
+		}
+
+		return handleErrorInternal(ex, ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
+	@ResponseBody
+	@ExceptionHandler(
+	{ MethodNotSupportedException.class })
+	public ErrorDTO handleMethodNotAllowedException(final MethodNotSupportedException ex)
 	{
 		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
 		if (LOG.isDebugEnabled())
@@ -100,7 +127,7 @@ public class BaseController
 	@ResponseBody
 	@ExceptionHandler(
 	{ NotFoundException.class })
-	public ErrorDTO handleUrlNotFoundException(final NotFoundException ex)
+	public ErrorDTO handleNotAcceptableException(final NotFoundException ex)
 	{
 		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
 		if (LOG.isDebugEnabled())
@@ -111,12 +138,62 @@ public class BaseController
 		return handleErrorInternal(ex, ex.getMessage());
 	}
 
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	@ResponseBody
+	@ExceptionHandler(
+	{ ForbiddenException.class })
+	public ErrorDTO handleForbiddenException(final ForbiddenException ex)
+	{
+		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug(ex);
+		}
+
+		return handleErrorInternal(ex, ex.getMessage());
+	}
+
+	@ResponseStatus(value = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+	@ResponseBody
+	@ExceptionHandler(
+	{ UnsupportedMediaException.class })
+	public ErrorDTO handleUnsupportedMediaException(final UnsupportedMediaException ex)
+	{
+		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug(ex);
+		}
+
+		return handleErrorInternal(ex, ex.getMessage());
+	}
+
+
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseBody
+	@ExceptionHandler(
+	{ Exception.class })
+	public ErrorDTO handleException(final Exception ex)
+	{
+		LOG.info("Handling Exception for this request - " + ex.getClass().getSimpleName() + " - " + sanitize(ex.getMessage()));
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug(ex);
+		}
+		return handleErrorInternal(ex, ex.getMessage());
+	}
+
+
 	protected ErrorDTO handleErrorInternal(final Exception ex, final String message)
 	{
 		final ErrorDTO error = new ErrorDTO();
 		error.setType(ex.getClass().getSimpleName().replace("Exception", "Error"));
 		error.setMessage(sanitize(message));
 		error.setCode(OcxExceptionCodes.get(ex.getClass()));
+		if (error.getCode() == null)
+		{
+			error.setCode(OcxExceptionCodes.get(Exception.class));
+		}
 		return error;
 	}
 
