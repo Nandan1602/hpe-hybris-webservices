@@ -1,0 +1,18 @@
+
+# Macros / Replacement Parameter definitions
+$productCatalog=pointnextproductcatalog
+$productCatalogName=pointnext Product Catalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$supercategories=supercategories(code, $catalogVersion)
+$baseProduct=baseProduct(code,$catalogVersion)
+$approved=approvalstatus(code)[default='approved']
+
+$langEN=en
+$langDE=de
+
+INSERT_UPDATE Product;code[unique=true];$supercategories;manufacturerName;manufacturerAID;unit(code);ean;variantType(code);$catalogVersion;$approved
+;1225694;;Canon;1901B020AA;pieces;8714574508740
+
+# Update allProducts with localisations
+UPDATE Product;code[unique=true];$catalogVersion;name[lang=$langEN];summary[lang=$langEN];description[lang=$langEN];description[lang=$langDE]
+ ;1225694;;EOS 40D body;EOS 40D -10.1 Megapixels/6.5fps/3.0"" LCD;- 10.1 MP APS-C CMOS sensor. <br/>- 6.5fps, 75 JPEG image burst. <br/>- High precision wide area AF. <br/>- 3.0"" LCD with Live View mode. <br/>- DIGIC III processor. <br/>- EOS Integrated Cleaning System. <br/>- Picture Style. <br/>- Magnesium alloy body.;

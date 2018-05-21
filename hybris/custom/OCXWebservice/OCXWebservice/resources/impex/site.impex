@@ -1,0 +1,74 @@
+
+$contentCatalog=pointnextcontentcatalog
+$languages=ja,en,de,zh
+$productCatalog=pointnextproductcatalog
+$classificationCatalog=__CLASSIFICATION_CATALOG_NAME__
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$languages=ja,en,de,zh
+$siteUid=pointnext
+$currencies=JPY,USD
+$net=false
+$storeUid=pointnext
+$defaultCurrency=USD
+$languages=ja,en,de,zh
+$defaultLanguage=en
+$unitedKingdom=GB,GG,IM,JE
+$europeNotUK=AD,AL,AT,BA,BE,BG,BY,CH,CY,CZ,DE,DK,EE,ES,FI,FO,FR,GI,GL,GR,HR,HU,IE,IS,IT,LI,LT,LU,LV,MC,MD,ME,MK,MT,NL,NO,PL,PT,RO,RS,RU,SE,SI,SK,SM,TR,UA,VA
+$asianCountries=CN,JP,VN,HK,KP,KR
+$deliveryCountries=$unitedKingdom,$europeNotUK,$asianCountries,US
+$orderProcessCode=order-process
+$pickupInStoreMode=BUY_AND_COLLECT
+$customerAllowedToIgnoreSuggestions=      true
+$paymentProvider=Mockup
+$promoGrp=$siteUidPromoGrp
+$checkoutFlowGroup=defaultCheckoutGroup
+$siteMapUrlLimitPerFile=50000
+
+$siteMapLangCur=enEur
+$siteMapPage=Homepage,Product,CategoryLanding,Category,Store,Content,Custom
+$customSiteMapUrls=
+
+########## Content catalog for CMS contents ##########
+
+INSERT_UPDATE ContentCatalog;id[unique=true]
+;$contentCatalog
+
+# Catalog versions for content catalogs
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];active;languages(isoCode)
+;$contentCatalog;Staged;false;$languages
+;$contentCatalog;Online;true;$languages
+
+
+########### Product catalog ##############
+
+INSERT_UPDATE Catalog;id[unique=true]
+;$productCatalog
+
+# Classification catalog
+INSERT_UPDATE ClassificationSystem;id[unique=true]
+;$classificationCatalog
+
+# Product versions for product catalogs
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];active;languages(isoCode);readPrincipals(uid)
+;$productCatalog;Staged;false;$languages;employeegroup
+;$productCatalog;Online;true;$languages;employeegroup
+
+########### BASE STORE ############
+
+INSERT_UPDATE PromotionGroup;Identifier[unique=true];
+;$promoGrp;
+
+# Base Store
+INSERT_UPDATE BaseStore;uid[unique=true];catalogs(id);currencies(isocode);net;taxGroup(code);storelocatorDistanceUnit(code);defaultCurrency(isocode);languages(isocode);defaultLanguage(isocode);deliveryCountries(isocode);submitOrderProcessCode;pickupInStoreMode(code);customerAllowedToIgnoreSuggestions;paymentProvider;
+;$storeUid;$productCatalog;$currencies;$net;;km;$defaultCurrency;$languages;$defaultLanguage;;$orderProcessCode;$pickupInStoreMode;$customerAllowedToIgnoreSuggestions;$paymentProvider;
+
+
+########### CMS SITE ##########
+
+INSERT_UPDATE SiteTheme;code[unique=true]
+;blue
+
+# CMS Site
+INSERT_UPDATE CMSSite;uid[unique=true];theme(code);channel(code);stores(uid);contentCatalogs(id);defaultCatalog(id);defaultLanguage(isoCode);urlPatterns;active;previewURL;
+;$siteUid;blue;B2C;$storeUid;$contentCatalog;$productCatalog;$defaultLanguage;(?i)^https?://[^/]+(/[^?]*)?\?(.*\&)?(site=$siteUid)(|\&.*)$,(?i)^https?://$siteUid\.[^/]+(|/.*|\?.*)$,(?i)^https?://api\.hybrisdev\.com(:[\d]+)?/rest/.*$,(?i)^https?://localhost(:[\d]+)?/rest/.*$;true;$storefrontContextRoot/?site=$siteUid;
+

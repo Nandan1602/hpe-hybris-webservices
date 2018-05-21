@@ -35,3 +35,31 @@ INSERT_UPDATE User;uid[unique=true];groups(uid);password[passwordEncoding=‘pbk
 INSERT_UPDATE OAuthClientDetails;clientId[unique=true];resourceIds;scope;authorizedGrantTypes;authorities;clientSecret;registeredRedirectUri
 ;hpe_client;hybris;extended;authorization_code,refresh_token,password,client_credentials;ROLE_TRUSTED_CLIENT;hpeocx;
 
+
+$lang=en
+INSERT_UPDATE Language;isocode[unique=true];fallbackLanguages(isocode);active[default=true]
+;en;;;
+;de;en;;
+;ja;en;;
+;zh;en;; 
+
+# Currencies
+INSERT_UPDATE Currency;isocode[unique=true];conversion;digits;symbol
+;GBP;1;2;£
+;EUR;1;2;€
+;USD;1,4;2;$
+;JPY;120;0;¥ 
+
+# Language
+UPDATE Language;isocode[unique=true];name[lang=$lang]
+ ;de;"German"
+ ;en;"English"
+ ;ja;"Japanese"
+ ;zh;"Chinese"
+
+# Currencies
+UPDATE Currency;isocode[unique=true];name[lang=$lang]
+ ;EUR;"Euro"
+ ;GBP;"Pound"
+ ;JPY;"Japanese Yen"
+ ;USD;"US Dollar"

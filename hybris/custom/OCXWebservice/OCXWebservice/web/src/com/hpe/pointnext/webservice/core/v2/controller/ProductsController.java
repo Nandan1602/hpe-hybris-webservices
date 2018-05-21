@@ -44,16 +44,6 @@ import de.hybris.platform.webservicescommons.cache.CacheControl;
 import de.hybris.platform.webservicescommons.cache.CacheControlDirective;
 import de.hybris.platform.webservicescommons.errors.exceptions.WebserviceValidationException;
 import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdParam;
-import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
-import com.hpe.pointnext.webservice.core.formatters.WsDateFormatter;
-import com.hpe.pointnext.webservice.core.product.data.ReviewDataList;
-import com.hpe.pointnext.webservice.core.product.data.SuggestionDataList;
-import com.hpe.pointnext.webservice.core.queues.data.ProductExpressUpdateElementData;
-import com.hpe.pointnext.webservice.core.queues.data.ProductExpressUpdateElementDataList;
-import com.hpe.pointnext.webservice.core.queues.impl.ProductExpressUpdateQueue;
-import com.hpe.pointnext.webservice.core.stock.CommerceStockFacade;
-import com.hpe.pointnext.webservice.core.v2.helper.ProductsHelper;
-import com.hpe.pointnext.webservice.core.validator.PointOfServiceValidator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +77,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.hpe.pointnext.webservice.core.constants.OCXWebserviceConstants;
+import com.hpe.pointnext.webservice.core.formatters.WsDateFormatter;
+import com.hpe.pointnext.webservice.core.product.data.ReviewDataList;
+import com.hpe.pointnext.webservice.core.product.data.SuggestionDataList;
+import com.hpe.pointnext.webservice.core.queues.data.ProductExpressUpdateElementData;
+import com.hpe.pointnext.webservice.core.queues.data.ProductExpressUpdateElementDataList;
+import com.hpe.pointnext.webservice.core.queues.impl.ProductExpressUpdateQueue;
+import com.hpe.pointnext.webservice.core.stock.CommerceStockFacade;
+import com.hpe.pointnext.webservice.core.v2.helper.ProductsHelper;
+import com.hpe.pointnext.webservice.core.validator.PointOfServiceValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -199,6 +199,8 @@ public class ProductsController extends BaseController
 
 
 	@RequestMapping(value = "/{productCode}", method = RequestMethod.GET)
+	@Secured(
+	{ "ROLE_CLIENT", "ROLE_TRUSTED_CLIENT" })
 	@CacheControl(directive = CacheControlDirective.PRIVATE, maxAge = 120)
 	@Cacheable(value = "productCache", key = "T(de.hybris.platform.commercewebservicescommons.cache.CommerceCacheKeyGenerator).generateKey(true,true,#productCode,#fields)")
 	@ResponseBody
@@ -217,6 +219,27 @@ public class ProductsController extends BaseController
 		return getDataMapper().map(product, ProductWsDTO.class, fields);
 	}
 
+
+	@RequestMapping(value = "/hpe/{productCode}", method = RequestMethod.GET)
+	@Secured(
+	{ "ROLE_SYSTEM" })
+	@CacheControl(directive = CacheControlDirective.PRIVATE, maxAge = 120)
+	@Cacheable(value = "productCache", key = "T(de.hybris.platform.commercewebservicescommons.cache.CommerceCacheKeyGenerator).generateKey(true,true,#productCode,#fields)")
+	@ResponseBody
+	@ApiOperation(value = "Get product details", notes = "Returns details of a single product according to a product code.")
+	@ApiBaseSiteIdParam
+	public ProductWsDTO getHpeProductByCode(
+			@ApiParam(value = "Product identifier", required = true) @PathVariable final String productCode,
+			@ApiParam(value = "Response configuration. This is the list of fields that should be returned in the response body.", allowableValues = "BASIC, DEFAULT, FULL") @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields)
+	{
+		if (LOG.isDebugEnabled())
+		{
+			LOG.debug("getProductByCode: code=" + sanitize(productCode) + " | options=" + PRODUCT_OPTIONS);
+		}
+
+		final ProductData product = productFacade.getProductForCodeAndOptions(productCode, OPTIONS);
+		return getDataMapper().map(product, ProductWsDTO.class, fields);
+	}
 
 	@RequestMapping(value = "/{productCode}/stock/{storeName}", method = RequestMethod.GET)
 	@ResponseBody
