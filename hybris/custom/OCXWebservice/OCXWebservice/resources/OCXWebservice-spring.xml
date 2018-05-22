@@ -261,4 +261,6 @@
     <bean id="defaultOrderCodeIdentificationStrategy" class="com.hpe.pointnext.webservice.core.strategies.impl.DefaultOrderCodeIdentificationStrategy">
         <property name="idPattern" value="[0-9a-f]{40}|[0-9a-f-]{36}"/>
     </bean>
+    
+    <bean id="acceleratorCoreSystemSetup" class="com.hpe.pointnext.webservice.core.setup.CoreSystemSetup" parent="abstractCoreSystemSetup" />
 </beans>
