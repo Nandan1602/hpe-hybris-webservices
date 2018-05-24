@@ -37,7 +37,7 @@ public class CoreSystemSetup extends AbstractSystemSetup
 	@SystemSetup(type = Type.ESSENTIAL, process = Process.ALL)
 	public void createEssentialData(final SystemSetupContext context)
 	{
-		importImpexFile(context, "/OCXWebservice/resources/impex/essentialdata-OCXWebservice.impex");
+		importImpexFile(context, "/impex/essentialdata-OCXWebservice.impex");
 	}
 
 	/**
@@ -63,7 +63,9 @@ public class CoreSystemSetup extends AbstractSystemSetup
 	@SystemSetup(type = Type.PROJECT, process = Process.ALL)
 	public void createProjectData(final SystemSetupContext context)
 	{
-		importImpexFile(context, "/OCXWebservice/resources/impex/projectdata-OCXWebservice.impex");
+		importImpexFile(context, "/impex/projectdata-OCXWebservice.impex");
+		importImpexFile(context, "/impex/site.impex");
+		importImpexFile(context, "/impex/products.impex");
 	}
 
 	protected void processCockpit(final SystemSetupContext context, final boolean importAccessRights,
