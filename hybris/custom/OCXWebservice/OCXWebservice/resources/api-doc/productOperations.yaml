@@ -1,0 +1,92 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "OCX Webservice"
+host: "localhost:9002"
+basePath: "/OCXWebservice/v2"
+tags:
+- name: "Products"
+  description: "HPE configurable Products"
+ schemes:
+- "https"
+paths:
+  /pointnext/hpe/productCode:
+    get:
+      tags:
+      - "Products"
+      description: "Gets Product"
+      operationId: "getHpeProductByCode"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "productCode"
+        in: "path"
+        description: "code of the product to retreive"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+              $ref: "#/definitions/Product"
+        500:
+          description: "error operation"
+          schema:
+            $ref: "#/definitions/ErrorDto"
+      security:
+      - OCXWebservice_auth:
+        - "read:products"
+securityDefinitions:
+  OCXWebservice_auth:
+    type: "oauth2"
+    authorizationUrl: "http://localhost:9002/authorizationserver/oauth/token"
+    flow: "implicit"
+    scopes:
+      read:products: "read your products"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Product:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      availableForPickup:
+        type: "boolean"
+        example: "false"
+      code:
+        type: "string"
+        example: "1225694"
+      description:
+        type: "string"
+        example: '10.1 MP APS-C CMOS sensor. <br/>- 6.5fps, 75 JPEG image burst. <br/>- High precision wide area AF. <br/>- 3.0\"\" LCD with Live View mode.'
+      manufacturer:
+        type: "string"
+        example: "Canon"
+      name:
+        type: "string"
+        example: "EOS 40D body"
+      summary:
+        type: "string"
+        example: "EOS 40D -10.1 Megapixels/6.5fps/3.0\"\" LCD"
+      url:
+        type: "string"
+        example: "/pointnext/products/1225694"
+  ErrorDto:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      code:
+        type: "integer"
+        example: "OCX007"
+      message:
+        type: "string"
+        example: "Product with code '12252694' not found!"
+      type:
+        type: "string"
+        example: "UnknownIdentifierError"

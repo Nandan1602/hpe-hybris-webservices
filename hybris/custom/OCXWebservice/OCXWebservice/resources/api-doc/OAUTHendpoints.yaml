@@ -1,0 +1,68 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "OCXWebservice"
+host: "localhost:9002"
+basePath: "/authorizationserver/oauth"
+tags:
+- name: "OAUTH"
+  description: "Operations about user"
+schemes:
+- "https"
+paths:
+  /token:
+    get:
+      tags:
+      - "OAUTH"
+      description: "Gets Access token."
+      produces:
+      - "application/json"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "grant_type"
+        in: "formData"
+        description: "password"
+        required: true
+        type: "string"
+      - name: "username"
+        in: "formData"
+        description: "hpe"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "hpe"
+        required: true
+        type: "string"
+      - name: "Content-Type"
+        in: "header"
+        description: "application/x-www-form-urlencoded"
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        description: "Basic aHBlX2NsaWVudDpocGVvY3g="
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+              $ref: "#/definitions/AccessToken"
+        401:
+          description: "Unauthorized - Bad credentials"
+definitions:
+  AccessToken:
+    type: "object"
+    properties:
+      access_token:
+        type: "string"
+      token_type:
+        type: "string"
+      refresh_token:
+        type: "string"
+      expires_in:
+        type: "string"
+      scope:
+        type: "string"
